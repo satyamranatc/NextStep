@@ -35,19 +35,12 @@ export async function loginController(req, res) {
 
 export async function registerController(req, res) {
 
-    let { fullname, avatar, username, email, password } = req.body;
+   
 
-    let newUser = new UserModel(
-        { 
-            fullname, 
-            avatar, 
-            username, 
-            email, 
-            password: bcrypt.hashSync(password, 10) 
-        });
+    let newUser = new UserModel(req.body);
     await newUser.save();
 
-    let token = await jwt.sign({ id: newUser._id }, jwtSecret);
+    let token = jwt.sign({ id: newUser._id }, jwtSecret);
 
     return res.json({ 
         "status": "success",

@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/dbConfig.js";
 
 import authRoutes from "./routes/authRoutes.js";
+import aiRoute from "./routes/aiRoute.js";
 
 dotenv.config();
 const app = express();
@@ -24,7 +25,8 @@ app.get("/", (req, res) => {
 });
 
 
-app.use("/api/auth", require("./routes/authRoutes.js"));
+app.use("/api/auth", authRoutes);
+app.use("/api/ai", aiRoute);
 
 
 app.listen(PORT, () => {
