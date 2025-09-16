@@ -1,14 +1,15 @@
 import UserModel from "../models/User.model.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import "dotenv/config";
 
 let jwtSecret = process.env.JWT_SECRET;
 
 export async function loginController(req, res) {
 
-    let { username, password } = req.body;
+    let { email, password } = req.body;
 
-    let user = await UserModel.findOne({ username });
+    let user = await UserModel.findOne({ email });
 
     if (!user) {
         return res.json({ "status": "error", "message": "User not found" });
@@ -18,17 +19,13 @@ export async function loginController(req, res) {
         return res.json({ "status": "error", "message": "Invalid password" });
     }
 
-    let token = await jwt.sign({ id: user._id }, jwtSecret);
+    let token = jwt.sign({ id: user._id }, jwtSecret);
 
-    return res.json({ 
-        "status": "success",
-        "user":{
-            "fullname": user.fullname,
+    return res.status(201).json({ 
+            "fullName": user.fullName,
             "avatar": user.avatar,
-            "username": user.username,
             "email": user.email,
             "token": token
-        }
      });
 };
 
@@ -36,21 +33,17 @@ export async function loginController(req, res) {
 export async function registerController(req, res) {
 
    
-
+    console.log(req.body);
     let newUser = new UserModel(req.body);
     await newUser.save();
 
     let token = jwt.sign({ id: newUser._id }, jwtSecret);
 
-    return res.json({ 
-        "status": "success",
-        "user":{
-            "fullname": newUser.fullname,
+    return res.status(201).json({ 
+            "fullName": newUser.fullName,
             "avatar": newUser.avatar,
-            "username": newUser.username,
             "email": newUser.email,
             "token": token
-        }
      });
 
 

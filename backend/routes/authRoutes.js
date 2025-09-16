@@ -3,8 +3,8 @@ import { loginController, registerController } from "../controllers/Auth.control
 
 const router = Router();
 
-router.get("/login",loginController);
-router.get("/register",registerController);
+router.post("/login",loginController);
+router.post("/register",registerController);
 
 
 

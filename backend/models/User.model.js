@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 let jwtSecret = process.env.JWT_SECRET;
 
 let UserSchema = new mongoose.Schema({
-    fullname:{
+    fullName:{
         type: String,
         required: true
     },
@@ -13,15 +13,10 @@ let UserSchema = new mongoose.Schema({
         required: true,
         default:"https://cdn-icons-png.flaticon.com/512/1154/1154987.png"
     },
-    username: {
-        type: String,
-        required: true,
-        unique: true,
-    },
+
     email: {
         type: String,
         required: true,
-        unique: true,
     },
     password: {
         type: String,
