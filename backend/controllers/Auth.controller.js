@@ -22,6 +22,7 @@ export async function loginController(req, res) {
     let token = jwt.sign({ id: user._id }, jwtSecret);
 
     return res.status(201).json({ 
+            "_id": user._id,
             "fullName": user.fullName,
             "avatar": user.avatar,
             "email": user.email,
@@ -40,6 +41,7 @@ export async function registerController(req, res) {
     let token = jwt.sign({ id: newUser._id }, jwtSecret);
 
     return res.status(201).json({ 
+           "_id": user._id,
             "fullName": newUser.fullName,
             "avatar": newUser.avatar,
             "email": newUser.email,

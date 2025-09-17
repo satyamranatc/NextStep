@@ -37,7 +37,7 @@ export default function App() {
 
           <Route path="/guide" element={
             <PrivateRoute isLoggedIn={isLoggedIn}>
-              <Guide />
+              <Guide userData = {userData} />
             </PrivateRoute>
           } />
           <Route path="/profile" element={

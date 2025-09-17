@@ -3,6 +3,14 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 let jwtSecret = process.env.JWT_SECRET;
 
+let GuideSchema = new mongoose.Schema({
+    GuideId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Guide",
+        required:true
+    }
+});
+
 let UserSchema = new mongoose.Schema({
     fullName:{
         type: String,
@@ -22,6 +30,7 @@ let UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    chats:[GuideSchema]
 });
 
 UserSchema.pre("save", async function (next) {
