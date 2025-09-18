@@ -8,29 +8,24 @@ let router = Router();
 
 router.post("/askQuery/:id", async (req, res) => {
     let userId = req.params.id;
+
     let { name, topic, previousExperience } = req.body;
 
-    askAi(topic, previousExperience, name).then(async (response) => {
-        // Comvert To Json
-        response = JSON.parse(response);
-        res.json(response);
+    let aiRes = await askAi(topic, previousExperience, name);
+    let aiResJSON = JSON.parse(aiRes);
 
-        // Save to DB
-        GuideModel.create(response).then((response) => {
-            res.json(response);
-        }).catch((error) => {
-            console.error('Error:', error);
-            res.status(500).json({ error: 'Something went wrong. Please try again.' });
-        });
 
-        let user = await UserModel.findOne({ _id: userId });
-        user.guideId.push(response._id);
-        await user.save();
 
-    }).catch((error) => {
-        console.error('Error:', error);
-        res.status(500).json({ error: 'Something went wrong. Please try again.' });
-    });
+    let guideModel = new GuideModel(aiResJSON);
+    await guideModel.save();
+
+    let userModel = await UserModel.findOne({ _id: userId });
+    userModel.chats.push(guideModel._id);
+    await userModel.save();
+
+
+    res.json(aiResJSON);
+    
 
 
 });
