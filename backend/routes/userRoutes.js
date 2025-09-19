@@ -3,6 +3,14 @@ import Router from "express"
 
 let router = Router();
 
+router.get("/previousChats/:userId", async (req, res) => {
+    let userId = req.params.userId;
+    let user = await UserModel.findOne({ _id: userId }).populate("chats");
+
+    res.json(user.chats);
+   
+})
+
 router.put("/update", (req, res) => {
 
     let { email, fullName, avatar } = req.body;

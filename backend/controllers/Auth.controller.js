@@ -41,7 +41,7 @@ export async function registerController(req, res) {
     let token = jwt.sign({ id: newUser._id }, jwtSecret);
 
     return res.status(201).json({ 
-           "_id": user._id,
+           "_id": newUser._id,
             "fullName": newUser.fullName,
             "avatar": newUser.avatar,
             "email": newUser.email,

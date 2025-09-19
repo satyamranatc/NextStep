@@ -26,7 +26,8 @@ let UserSchema = new mongoose.Schema({
     },
     chats:[{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"CareerGuide",}]
+        ref:"CareerGuide",}],
+        default:[]
 });
 
 UserSchema.pre("save", async function (next) {

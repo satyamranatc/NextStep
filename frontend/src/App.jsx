@@ -7,6 +7,7 @@ import Profile from "./components/Profile.jsx"
 import PrivateRoute from "./components/PrivateRoute.jsx"
 
 
+
 import Home from "./pages/Home.jsx"
 import Guide from "./pages/Guide.jsx"
 

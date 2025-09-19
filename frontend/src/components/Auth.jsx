@@ -23,11 +23,18 @@ export default function Auth({setIsLoggedIn, setUserData}) {
 
         let res = await axios.post("http://localhost:5500/api/auth/login", Data);
 
+          if(res.status == 201)
+          {
             console.log(res.data);
-            localStorage.setItem("userData", JSON.stringify(res.data));
-            setIsLoggedIn(true);
-            setUserData(res.data);
-            navigate("/profile");
+              localStorage.setItem("userData", JSON.stringify(res.data));
+              setIsLoggedIn(true);
+              setUserData(res.data);
+              navigate("/profile");
+          }
+        else
+        {
+          console.log(res);
+        }
             
        
         
