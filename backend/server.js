@@ -6,6 +6,7 @@ import connectDB from "./config/dbConfig.js";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import aiRoute from "./routes/aiRoute.js";
+import authMiddleware from "./middleware/authMiddleware.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -26,8 +27,11 @@ app.get("/", (req, res) => {
 
 
 app.use("/api/auth", authRoutes);
-app.use("/api/user", userRoutes);
-app.use("/api/ai", aiRoute);
+app.use("/api/user",authMiddleware, userRoutes);
+app.use("/api/ai", authMiddleware,aiRoute);
+app.get("/api/check", authMiddleware,(req, res) => {
+  res.json({ "status": "success", "message": "Authorized" });
+});
 
 
 app.listen(PORT, () => {

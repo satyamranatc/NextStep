@@ -19,7 +19,11 @@ export default function Guide({userData}) {
     
     try {
       // Uncomment and use your actual API call
-      let response = await axios.post(`http://localhost:5500/api/ai/askQuery/${userData._id}`, Data);
+      let response = await axios.post(`http://localhost:5500/api/ai/askQuery/${userData._id}`, Data,{
+        headers: {
+          "Authorization": `${""}`
+        },
+      });
       console.log(response.data);
       setGuide(response.data);
       
