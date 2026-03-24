@@ -11,23 +11,53 @@ router.post("/askQuery/:id", async (req, res) => {
 
     let { name, topic, previousExperience } = req.body;
 
-    let aiRes = await askAi(topic, previousExperience, name);
-    let aiResJSON = JSON.parse(aiRes);
+    try {
+        console.log("Generating guide for topic:", topic, "user:", userId);
+        const aiRes = await askAi(topic, previousExperience, name);
+        
+        if (!aiRes) {
+            console.error("AI returned null/empty response. Check your API key.");
+            return res.status(500).json({ 
+                status: "error", 
+                message: "AI service failed. Please check your GEMINI_API_KEY in the backend .env file." 
+            });
+        }
 
+        console.log("Raw AI Response received. Attempting to parse...");
+        
+        let aiResJSON;
+        try {
+            const jsonMatch = aiRes.match(/\{[\s\S]*\}/);
+            const jsonString = jsonMatch ? jsonMatch[0] : aiRes;
+            aiResJSON = JSON.parse(jsonString);
+        } catch (parseError) {
+            console.error("JSON Parse Error:", parseError);
+            console.log("Problematic AI Response:", aiRes);
+            return res.status(500).json({ 
+                status: "error", 
+                message: "AI returned invalid JSON. Please try again." 
+            });
+        }
 
+        console.log("Saving guide to database...");
+        let guideModel = new GuideModel(aiResJSON);
+        await guideModel.save();
 
-    let guideModel = new GuideModel(aiResJSON);
-    await guideModel.save();
+        let userModel = await UserModel.findById(userId);
+        if (userModel) {
+            userModel.chats.push(guideModel._id);
+            await userModel.save();
+        }
 
-    let userModel = await UserModel.findOne({ _id: userId });
-    userModel.chats.push(guideModel._id);
-    await userModel.save();
-
-
-    res.json(aiResJSON);
-    
-
-
+        console.log("Guide generated and saved successfully!");
+        return res.json(aiResJSON);
+    } catch (error) {
+        console.error("Detailed AI Route Error:", error);
+        return res.status(500).json({ 
+            status: "error", 
+            message: error.message || "An unexpected error occurred during guide generation." 
+        });
+    }
 });
 
 

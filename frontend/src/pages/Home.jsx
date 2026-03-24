@@ -1,257 +1,253 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { 
+  ArrowRight, 
+  BookOpen, 
+  Zap, 
+  Trophy, 
+  Users, 
+  ChevronRight,
+  Sparkles,
+  Map,
+  Target
+} from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-    
-
+    <div className="min-h-screen bg-slate-50 overflow-x-hidden">
       {/* Hero Section */}
-      <section className="py-20">
-        <div className="w-full mx-auto text-center px-6">
-          <div className="bg-white rounded-2xl shadow-lg border border-indigo-200 p-12">
-            {/* Icon/Logo */}
-            <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <svg className="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
+      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        {/* Decorative Background Elements */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10">
+          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-indigo-100/50 blur-[120px] animate-pulse"></div>
+          <div className="absolute bottom-[10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-purple-100/50 blur-[120px] animate-pulse" style={{ animationDelay: '2s' }}></div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-6 relative">
+          <div className="text-center max-w-4xl mx-auto">
+            <div className="inline-flex items-center space-x-2 px-4 py-2 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-sm font-medium mb-8 animate-bounce">
+              <Sparkles className="w-4 h-4" />
+              <span>AI-Powered Career Guidance</span>
             </div>
             
-            {/* Title */}
-            <h1 className="text-4xl font-bold text-indigo-700 mb-4">
-              Welcome to Next Step
+            <h1 className="text-5xl lg:text-7xl font-extrabold tracking-tight text-slate-900 mb-8 leading-[1.1]">
+              Your Journey to <span className="text-transparent bg-clip-text premium-gradient">Mastery</span> Starts Here
             </h1>
             
-            {/* Subtitle */}
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-              Your personal guide to learning. Get curated roadmaps, resources,
-              and step-by-step directions to achieve your study goals.
+            <p className="text-xl text-slate-600 mb-12 leading-relaxed max-w-2xl mx-auto">
+              Stop guessing your next move. Get hyper-personalized learning roadmaps, handpicked resources, and career insights tailored specifically to your goals.
             </p>
             
-            {/* CTA Button */}
-            <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-lg shadow-md hover:shadow-lg transition-all duration-200 inline-flex items-center space-x-2">
-              <span>Get Started</span>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </button>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link 
+                to="/auth" 
+                className="group relative px-8 py-4 bg-slate-900 text-white rounded-2xl font-semibold text-lg hover:bg-slate-800 transition-all duration-300 shadow-xl hover:shadow-indigo-200/50 flex items-center space-x-2"
+              >
+                <span>Start Your Roadmap</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+              <a 
+                href="#features" 
+                className="px-8 py-4 bg-white text-slate-900 rounded-2xl font-semibold text-lg border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all duration-300"
+              >
+                Learn More
+              </a>
+            </div>
+
+            {/* Stats/Social Proof */}
+            <div className="mt-20 flex flex-wrap justify-center gap-12 lg:gap-24 opacity-60">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-slate-900">10k+</div>
+                <div className="text-sm font-medium text-slate-500 uppercase tracking-wider">Roadmaps Managed</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-slate-900">1.2M</div>
+                <div className="text-sm font-medium text-slate-500 uppercase tracking-wider">Resources Curated</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-slate-900">98%</div>
+                <div className="text-sm font-medium text-slate-500 uppercase tracking-wider">Success Rate</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Features - Bento Grid Style */}
+      <section id="features" className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl lg:text-5xl font-bold text-slate-900 mb-6">Built for Modern Learners</h2>
+            <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+              We've combined the power of LLMs with industry best practices to give you the ultimate learning companion.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-6 gap-6">
+            {/* Feature 1 */}
+            <div className="md:col-span-3 premium-card p-10 flex flex-col justify-between overflow-hidden relative group">
+              <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform duration-500">
+                <Map className="w-48 h-48 text-indigo-600" />
+              </div>
+              <div>
+                <div className="w-14 h-14 rounded-2xl bg-indigo-600 flex items-center justify-center text-white mb-8 shadow-lg shadow-indigo-200">
+                  <BookOpen className="w-7 h-7" />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900 mb-4">Atomic Roadmaps</h3>
+                <p className="text-slate-600 text-lg">Detailed, step-by-step paths that break complex subjects into manageable, actionable milestones.</p>
+              </div>
+            </div>
+
+            {/* Feature 2 */}
+            <div className="md:col-span-3 premium-card p-10 flex flex-col justify-between overflow-hidden relative group">
+              <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-110 transition-transform duration-500 font-bold text-9xl text-indigo-600">AI</div>
+              <div>
+                <div className="w-14 h-14 rounded-2xl bg-violet-600 flex items-center justify-center text-white mb-8 shadow-lg shadow-violet-200">
+                  <Zap className="w-7 h-7" />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900 mb-4">Real-time Adaptation</h3>
+                <p className="text-slate-600 text-lg">Our AI adjusts your path based on your existing knowledge and desired speed of learning.</p>
+              </div>
+            </div>
+
+            {/* Feature 3 */}
+            <div className="md:col-span-2 premium-card p-8 group">
+              <div className="w-12 h-12 rounded-xl bg-purple-600 flex items-center justify-center text-white mb-6 shadow-lg shadow-purple-100">
+                <Trophy className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Goal Oriented</h3>
+              <p className="text-slate-600">Set your destination, and we'll calculate the most efficient route there.</p>
+            </div>
+
+            {/* Feature 4 */}
+            <div className="md:col-span-2 premium-card p-8 group">
+              <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center text-white mb-6 shadow-lg shadow-blue-100">
+                <Users className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Industry Insights</h3>
+              <p className="text-slate-600">Get data on top companies hiring for your skills and average package info.</p>
+            </div>
+
+            {/* Feature 5 */}
+            <div className="md:col-span-2 premium-card p-8 group">
+              <div className="w-12 h-12 rounded-xl bg-emerald-600 flex items-center justify-center text-white mb-6 shadow-lg shadow-emerald-100">
+                <Target className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3">Precision Search</h3>
+              <p className="text-slate-600">Discover handpicked courses and books from across the web in seconds.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works - Modern Steps */}
+      <section className="py-24 bg-slate-50">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-20 items-center">
+            <div>
+              <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-8 leading-tight">Simple process, <br /><span className="text-indigo-600">Exceptional</span> results.</h2>
+              <div className="space-y-12">
+                <div className="flex gap-6">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-full premium-gradient flex items-center justify-center text-white font-bold text-lg shadow-xl shadow-indigo-200">1</div>
+                  <div>
+                    <h3 className="text-xl font-bold text-slate-900 mb-2">Input Your Ambition</h3>
+                    <p className="text-slate-600">Tell us what you want to master and what you already know. Our AI analyzes your starting point.</p>
+                  </div>
+                </div>
+                <div className="flex gap-6">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-full premium-gradient flex items-center justify-center text-white font-bold text-lg shadow-xl shadow-indigo-200">2</div>
+                  <div>
+                    <h3 className="text-xl font-bold text-slate-900 mb-2">AI Generates Your Path</h3>
+                    <p className="text-slate-600">In seconds, a structured 5-step roadmap is built just for you, complete with curated resource lists.</p>
+                  </div>
+                </div>
+                <div className="flex gap-6">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-full premium-gradient flex items-center justify-center text-white font-bold text-lg shadow-xl shadow-indigo-200">3</div>
+                  <div>
+                    <h3 className="text-xl font-bold text-slate-900 mb-2">Execute and Succeed</h3>
+                    <p className="text-slate-600">Follow the guide, use the resources, and watch your skills grow as you hit every milestone.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
             
-            {/* Small feature highlights */}
-            <div className="flex items-center justify-center space-x-8 mt-8 pt-8 border-t border-indigo-100">
-              <div className="flex items-center space-x-2 text-sm text-indigo-600">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span>Personalized</span>
-              </div>
-              
-              <div className="flex items-center space-x-2 text-sm text-indigo-600">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-                <span>Fast & Easy</span>
-              </div>
-              
-              <div className="flex items-center space-x-2 text-sm text-indigo-600">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-                </svg>
-                <span>Free to Use</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section id="features" className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-indigo-700 mb-4">Why Choose Next Step?</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Everything you need to create personalized learning paths and achieve your educational goals
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center p-6 rounded-xl bg-gradient-to-br from-indigo-50 to-blue-50 border border-indigo-200">
-              <div className="w-12 h-12 bg-indigo-600 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 00-2 2z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-indigo-800 mb-2">Structured Roadmaps</h3>
-              <p className="text-gray-600">Get step-by-step learning paths tailored to your experience level and goals.</p>
-            </div>
-
-            <div className="text-center p-6 rounded-xl bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200">
-              <div className="w-12 h-12 bg-purple-600 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-purple-800 mb-2">Curated Resources</h3>
-              <p className="text-gray-600">Access handpicked books, courses, and materials from industry experts.</p>
-            </div>
-
-            <div className="text-center p-6 rounded-xl bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200">
-              <div className="w-12 h-12 bg-green-600 rounded-lg flex items-center justify-center mx-auto mb-4">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold text-green-800 mb-2">Career Insights</h3>
-              <p className="text-gray-600">Discover salary trends, top companies, and future job market opportunities.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How it Works Section */}
-      <section id="how-it-works" className="py-20">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-indigo-700 mb-4">How It Works</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Three simple steps to get your personalized learning guide
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-indigo-600 text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold">
-                1
-              </div>
-              <h3 className="text-xl font-semibold text-indigo-800 mb-4">Tell Us Your Goals</h3>
-              <p className="text-gray-600">Share what you want to learn and your current experience level.</p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-indigo-600 text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold">
-                2
-              </div>
-              <h3 className="text-xl font-semibold text-indigo-800 mb-4">Get Your Roadmap</h3>
-              <p className="text-gray-600">Receive a customized learning path with resources and timelines.</p>
-            </div>
-
-            <div className="text-center">
-              <div className="w-16 h-16 bg-indigo-600 text-white rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold">
-                3
-              </div>
-              <h3 className="text-xl font-semibold text-indigo-800 mb-4">Start Learning</h3>
-              <p className="text-gray-600">Follow your guide and track your progress towards your goals.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section id="testimonials" className="py-20 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-indigo-700 mb-4">What Our Users Say</h2>
-            <p className="text-lg text-gray-600">Join thousands of learners who've achieved their goals</p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-gradient-to-br from-indigo-50 to-blue-50 p-6 rounded-xl border border-indigo-200">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center text-white font-semibold mr-4">
-                  S
+            <div className="relative animate-float">
+              <div className="glass rounded-[2.5rem] p-4 lg:p-8 relative z-10">
+                <div className="rounded-2xl overflow-hidden shadow-2xl">
+                  <img 
+                    src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=2000" 
+                    alt="Platform Preview" 
+                    className="w-full h-auto"
+                  />
                 </div>
-                <div>
-                  <h4 className="font-semibold text-indigo-800">Sarah Chen</h4>
-                  <p className="text-sm text-indigo-600">Web Developer</p>
+                {/* Float elements */}
+                <div className="absolute -top-6 -right-6 glass p-4 rounded-2xl shadow-xl flex items-center gap-3 animate-pulse">
+                  <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600">
+                    <Zap className="w-5 h-5 leading-none" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-bold text-slate-900">Roadmap Generated</div>
+                    <div className="text-xs text-slate-500">In 0.8 seconds</div>
+                  </div>
                 </div>
               </div>
-              <p className="text-gray-600">"Next Step helped me transition from marketing to web development. The roadmap was perfect for my skill level!"</p>
-            </div>
-
-            <div className="bg-gradient-to-br from-purple-50 to-indigo-50 p-6 rounded-xl border border-purple-200">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white font-semibold mr-4">
-                  M
-                </div>
-                <div>
-                  <h4 className="font-semibold text-purple-800">Mike Johnson</h4>
-                  <p className="text-sm text-purple-600">Data Scientist</p>
-                </div>
-              </div>
-              <p className="text-gray-600">"The curated resources saved me months of research. I landed my dream job in data science!"</p>
-            </div>
-
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-6 rounded-xl border border-green-200">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center text-white font-semibold mr-4">
-                  A
-                </div>
-                <div>
-                  <h4 className="font-semibold text-green-800">Anna Rodriguez</h4>
-                  <p className="text-sm text-green-600">UX Designer</p>
-                </div>
-              </div>
-              <p className="text-gray-600">"Amazing platform! The step-by-step approach made learning UX design much less overwhelming."</p>
+              <div className="absolute inset-0 bg-indigo-600 blur-[80px] opacity-10 -z-10 rounded-full translate-y-12"></div>
             </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20">
-        <div className="max-w-4xl mx-auto text-center px-6">
-          <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-12 text-white">
-            <h2 className="text-3xl font-bold mb-4">Ready to Start Your Learning Journey?</h2>
-            <p className="text-xl text-indigo-100 mb-8">
-              Join thousands of learners who are already achieving their goals with Next Step
-            </p>
-            <button className="bg-white text-indigo-600 hover:bg-gray-100 font-semibold py-3 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 inline-flex items-center space-x-2">
-              <span>Create Your First Guide</span>
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+      <section className="py-24">
+        <div className="max-w-5xl mx-auto px-6">
+          <div className="premium-gradient rounded-[3rem] p-12 lg:p-20 text-center relative overflow-hidden shadow-2xl shadow-indigo-300">
+            {/* Background pattern */}
+            <div className="absolute inset-0 opacity-10 pointer-events-none">
+              <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M0 0 L100 0 L100 100 L0 100 Z" fill="url(#grid)" />
+                <defs>
+                   <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                     <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" strokeWidth="0.5" />
+                   </pattern>
+                </defs>
               </svg>
-            </button>
+            </div>
+            
+            <div className="relative z-10">
+              <h2 className="text-4xl lg:text-6xl font-bold text-white mb-8">Ready to take the <br />Next Step?</h2>
+              <p className="text-xl text-indigo-100 mb-12 max-w-2xl mx-auto">
+                Join thousands of students and professionals who have accelerated their learning journeys.
+              </p>
+              <Link 
+                to="/auth" 
+                className="inline-flex items-center space-x-3 px-10 py-5 bg-white text-indigo-600 rounded-2xl font-bold text-xl hover:bg-slate-50 transition-all duration-300 shadow-xl"
+              >
+                <span>Get Started for Free</span>
+                <ChevronRight className="w-6 h-6" />
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-white border-t border-indigo-200 py-12">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="col-span-1 md:col-span-2">
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
-                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                  </svg>
-                </div>
-                <span className="text-xl font-bold text-indigo-700">Next Step</span>
-              </div>
-              <p className="text-gray-600 mb-4">
-                Empowering learners worldwide with personalized study guides and career insights.
-              </p>
+      {/* Simple Footer */}
+      <footer className="py-12 border-t border-slate-200">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col md:row items-center justify-between gap-8">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 premium-gradient rounded-lg flex items-center justify-center text-white shadow-lg">
+              <Zap className="w-4 h-4" />
             </div>
-            
-            <div>
-              <h4 className="font-semibold text-indigo-800 mb-4">Product</h4>
-              <ul className="space-y-2 text-gray-600">
-                <li><a href="#" className="hover:text-indigo-600">Features</a></li>
-                <li><a href="#" className="hover:text-indigo-600">Pricing</a></li>
-                <li><a href="#" className="hover:text-indigo-600">API</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold text-indigo-800 mb-4">Support</h4>
-              <ul className="space-y-2 text-gray-600">
-                <li><a href="#" className="hover:text-indigo-600">Help Center</a></li>
-                <li><a href="#" className="hover:text-indigo-600">Contact</a></li>
-                <li><a href="#" className="hover:text-indigo-600">Privacy</a></li>
-              </ul>
-            </div>
+            <span className="text-xl font-bold tracking-tight text-slate-900">NextStep</span>
           </div>
           
-          <div className="border-t border-indigo-100 mt-8 pt-8 text-center text-gray-600">
-            <p>&copy; 2024 Next Step. All rights reserved.</p>
+          <div className="flex gap-8 text-slate-500 font-medium">
+            <a href="#" className="hover:text-indigo-600 transition-colors">Privacy</a>
+            <a href="#" className="hover:text-indigo-600 transition-colors">Terms</a>
+            <a href="#" className="hover:text-indigo-600 transition-colors">Twitter</a>
+          </div>
+          
+          <div className="text-slate-400 text-sm">
+            &copy; 2024 NextStep AI. All rights reserved.
           </div>
         </div>
       </footer>

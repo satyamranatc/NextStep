@@ -1,92 +1,98 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-
+import api from "./api/axios";
 import NavBar from "./components/NavBar.jsx";
 import Auth from "./components/Auth.jsx";
 import Profile from "./components/Profile.jsx";
 import PrivateRoute from "./components/PrivateRoute.jsx";
-
 import Home from "./pages/Home.jsx";
 import Guide from "./pages/Guide.jsx";
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 export default function App() {
-  let [isLoggedIn, setIsLoggedIn] = useState(false);
-  let [isLoading, setIsLoading] = useState(true);
-  let [userData, setUserData] = useState({});
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [userData, setUserData] = useState({});
 
   useEffect(() => {
-    let user = localStorage.getItem("userData");
-    if (!user) {
+    const userString = localStorage.getItem("userData");
+    if (!userString) {
       setIsLoading(false);
       return;
     }
 
-    user = JSON.parse(user); 
-
+    const user = JSON.parse(userString);
     if (!user.token) {
       setIsLoading(false);
       return;
     }
 
-    axios
-      .get("http://localhost:5500/api/check", {
-        headers: {
-          Authorization: `${user.token}`,
-        },
-      })
+    api
+      .get("/check")
       .then((res) => {
         if (res.data.status === "success") {
           setIsLoggedIn(true);
-          setUserData(res.data.user || {}); 
+          setUserData(res.data.user || user);
+        } else {
+          localStorage.removeItem("userData");
         }
-        setIsLoading(false);
       })
       .catch(() => {
+        setIsLoggedIn(false);
+        localStorage.removeItem("userData");
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   }, []);
 
   if (isLoading) {
-    return <h2>Loading...</h2>; // show loader
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <div className="w-12 h-12 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></div>
+      </div>
+    );
   }
 
   return (
-    <div>
+    <div className="min-h-screen bg-slate-50 text-slate-900">
       <BrowserRouter>
         <NavBar isLoggedIn={isLoggedIn} userData={userData} />
-        <Routes>
-          <Route path="/" element={<Home />} />
-
-          <Route
-            path="/guide"
-            element={
-              <PrivateRoute isLoggedIn={isLoggedIn}>
-                <Guide userData={userData} />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <PrivateRoute isLoggedIn={isLoggedIn}>
-                <Profile
-                  userData={userData}
-                  setIsLoggedIn={setIsLoggedIn}
-                  setUserData={setUserData}
-                />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/auth"
-            element={
-              <Auth setIsLoggedIn={setIsLoggedIn} setUserData={setUserData} />
-            }
-          />
-          <Route path="/*" element={<h1>Not Found!</h1>} />
-        </Routes>
+        <main className="pt-0">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route
+              path="/guide"
+              element={
+                <PrivateRoute isLoggedIn={isLoggedIn}>
+                  <Guide userData={userData} />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute isLoggedIn={isLoggedIn}>
+                  <Profile
+                    userData={userData}
+                    setIsLoggedIn={setIsLoggedIn}
+                    setUserData={setUserData}
+                  />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/auth"
+              element={
+                <Auth setIsLoggedIn={setIsLoggedIn} setUserData={setUserData} />
+              }
+            />
+            <Route path="/*" element={
+              <div className="min-h-screen flex items-center justify-center">
+                <h1 className="text-4xl font-bold text-slate-400">404 | Not Found</h1>
+              </div>
+            } />
+          </Routes>
+        </main>
       </BrowserRouter>
     </div>
   );

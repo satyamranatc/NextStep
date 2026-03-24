@@ -1,14 +1,12 @@
-import { GoogleGenAI } from "@google/genai";
-import "dotenv/config"
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import "dotenv/config";
 
-// Initialize the Gemini client
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY
-});
-
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 export default async function askAi(topic, previousExperience, name) {
-const prompt = `
+  const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" });
+
+  const prompt = `
 You are a Senior, Friendly Career Consultant with a clear goal of guiding students.
 Your responsibilities:
 1. Give clear, concise answers with simple examples (add a touch of Indian humor).
@@ -105,17 +103,13 @@ USER INPUT:
 - Previous Experience: ${previousExperience}
 - New Topic: ${topic}
 `;
+
   try {
-   const response = await ai.models.generateContent({ model: "gemini-2.5-flash", contents: prompt, });
-   return response.text;
-    }
-    catch (error) {
-      console.error("Error:", error);
-      return null;
-    }
-}
-
-
-export function sleep(ms) {
-  
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    return response.text();
+  } catch (error) {
+    console.error("Gemini API Error:", error);
+    return null;
+  }
 }

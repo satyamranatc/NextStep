@@ -1,408 +1,351 @@
 import React, { useState } from "react";
-// Uncomment the line below if you're using axios
-import axios from "axios";
+import api from "../api/axios";
 import Sidebar from "../components/Sidebar";
+import { 
+  Sparkles, 
+  Send, 
+  BookOpen, 
+  ExternalLink, 
+  Map as MapIcon, 
+  Rocket, 
+  Library, 
+  Briefcase, 
+  IndianRupee, 
+  Globe,
+  CheckCircle2,
+  ChevronRight
+} from "lucide-react";
 
-export default function Guide({userData}) {
+export default function Guide({ userData }) {
   const [guide, setGuide] = useState({});
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
-    
-    let Data = {
-      name: e.target[0].value,
-      topic: e.target[1].value,
-      previousExperience: e.target[2].value,
-    };
-    
+    setError("");
+
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+
     try {
-      // Uncomment and use your actual API call
-      let response = await axios.post(`http://localhost:5500/api/ai/askQuery/${userData._id}`, Data,{
-        headers: {
-          "Authorization": `${""}`
-        },
-      });
-      console.log(response.data);
+      const response = await api.post(`/ai/askQuery/${userData._id}`, data);
       setGuide(response.data);
-      
-      // For now, we'll just log the data
-      console.log("Form data:", Data);
-    } catch (error) {
-      console.error("Error fetching guide:", error);
+    } catch (err) {
+      console.error("Error fetching guide:", err);
+      setError("Failed to generate guide. Please try again.");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="flex min-h-screen bg-slate-50">
       {/* Sidebar */}
-      <div className="w-80 flex-shrink-0">
-        <Sidebar userId={userData._id}/>
+      <div className="w-80 hidden lg:flex">
+        <Sidebar userId={userData._id} />
       </div>
-      
+
       {/* Main Content */}
-      <div className="flex-1 overflow-auto">
-        <div className="max-w-6xl mx-auto px-6 py-8">
+      <div className="flex-1 h-screen overflow-y-auto pt-24 pb-12">
+        <div className="max-w-6xl mx-auto px-8">
           
+          {/* Header Section */}
+          <div className="mb-12 text-center lg:text-left">
+            <h1 className="text-4xl font-extrabold text-slate-900 mb-4 flex items-center justify-center lg:justify-start gap-4">
+              <div className="w-12 h-12 premium-gradient rounded-2xl flex items-center justify-center text-white shadow-lg">
+                <MapIcon className="w-6 h-6" />
+              </div>
+              Knowledge Roadmap
+            </h1>
+            <p className="text-lg text-slate-600 max-w-2xl font-medium">Design your personalized path to expertise. Tell us what you want to learn, and our AI will build the ultimate guide for you.</p>
+          </div>
+
           {/* Form Section */}
-          <div className="mb-10">
-            <div className="max-w-2xl mx-auto">
-              <form
-                onSubmit={handleSubmit}
-                className="bg-white border border-indigo-200 rounded-xl shadow-lg p-8 space-y-6"
-              >
-                <div className="text-center mb-6">
-                  <h1 className="text-3xl font-bold text-indigo-700 mb-2">
-                    Study Guide Generator
-                  </h1>
-                  <p className="text-indigo-600">Create personalized learning paths tailored to your experience</p>
+          <div className="mb-16">
+            <form
+              onSubmit={handleSubmit}
+              className="glass p-10 rounded-[2.5rem] shadow-2xl border border-white/50 relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 p-12 opacity-5 pointer-events-none">
+                <Sparkles className="w-64 h-64 text-indigo-600" />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-3 ml-1">
+                      Target Subject
+                    </label>
+                    <input
+                      name="topic"
+                      type="text"
+                      placeholder="e.g., Quantum Computing, UX Design..."
+                      className="w-full bg-white/50 border border-slate-200 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 p-4 rounded-2xl transition-all font-medium"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-3 ml-1">
+                      Preferred Learning Style
+                    </label>
+                    <select 
+                      name="style"
+                      className="w-full bg-white/50 border border-slate-200 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 p-4 rounded-2xl transition-all font-medium appearance-none"
+                    >
+                      <option value="practical">Project-Based (Hands-on)</option>
+                      <option value="theoretical">Academic (Deep Theory)</option>
+                      <option value="fast">Fast-Track (Quick Wins)</option>
+                    </select>
+                  </div>
                 </div>
-                
-                <div className="space-y-5">
+
+                <div className="space-y-6">
                   <div>
-                    <label className="block text-sm font-semibold text-indigo-700 mb-2">
-                      Your Name
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="Enter your name"
-                      className="w-full p-4 rounded-lg border border-indigo-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none transition-all duration-200"
-                      required
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-semibold text-indigo-700 mb-2">
-                      Study Topic
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="What would you like to learn?"
-                      className="w-full p-4 rounded-lg border border-indigo-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none transition-all duration-200"
-                      required
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-semibold text-indigo-700 mb-2">
-                      Previous Experience
+                    <label className="block text-sm font-bold text-slate-700 mb-3 ml-1">
+                      Previous Experience & Context
                     </label>
                     <textarea
-                      placeholder="Describe your current knowledge and experience in this area"
-                      rows="4"
-                      className="w-full p-4 rounded-lg border border-indigo-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none resize-none transition-all duration-200"
+                      name="previousExperience"
+                      placeholder="e.g., I'm a CS student with basic Python knowledge..."
+                      rows="5"
+                      className="w-full bg-white/50 border border-slate-200 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10 p-4 rounded-2xl transition-all font-medium resize-none"
                       required
                     />
                   </div>
                 </div>
-                
+              </div>
+
+              <input type="hidden" name="name" value={userData.fullName || "User"} />
+              
+              <div className="mt-10 flex items-center justify-between">
+                {error && <p className="text-red-500 font-bold text-sm">{error}</p>}
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 disabled:cursor-not-allowed text-white py-4 px-6 rounded-lg font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl"
+                  className="ml-auto flex items-center gap-3 px-10 py-4 premium-gradient text-white rounded-2xl font-bold text-lg shadow-xl shadow-indigo-200 hover:shadow-indigo-300 hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-70 disabled:pointer-events-none"
                 >
                   {loading ? (
-                    <div className="flex items-center justify-center space-x-2">
-                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      <span>Generating Your Guide...</span>
-                    </div>
+                    <>
+                      <div className="w-6 h-6 border-3 border-white/30 border-t-white rounded-full animate-spin"></div>
+                      <span>Analyzing & Mapping...</span>
+                    </>
                   ) : (
-                    "Generate Personalized Guide"
+                    <>
+                      <span>Generate My Path</span>
+                      <Send className="w-5 h-5" />
+                    </>
                   )}
                 </button>
-              </form>
-            </div>
+              </div>
+            </form>
           </div>
 
           {/* Guide Content */}
           {guide && Object.keys(guide).length > 0 && (
-            <div className="bg-white rounded-xl shadow-lg border border-indigo-200 overflow-hidden">
+            <div className="space-y-16 animate-in fade-in slide-in-from-bottom-8 duration-700">
               
-              {/* Header Section */}
-              <div className="bg-gradient-to-r from-indigo-600 to-indigo-700 text-white p-8">
-                <h1 className="text-3xl font-bold mb-4">
-                  {guide.greetings}
-                </h1>
-                <p className="text-indigo-100 text-lg leading-relaxed mb-6">{guide.prior_knowledge}</p>
-                
-                <div className="flex flex-wrap gap-4">
-                  <div className="bg-white bg-opacity-20 backdrop-blur-sm px-6 py-3 rounded-lg">
-                    <span className="font-semibold text-indigo-100">Prior Knowledge: </span>
-                    <span className="text-white font-bold text-lg">{guide.prior_knowledge_alignment}/10</span>
-                  </div>
-                  {guide.future && (
-                    <div className="bg-green-500 bg-opacity-90 px-6 py-3 rounded-lg">
-                      <span className="font-semibold text-green-100">Future Relevance: </span>
-                      <span className="text-white font-bold text-lg">{guide.future.relevance_score}/10</span>
+              {/* Header Card */}
+              <div className="premium-gradient rounded-[3rem] p-12 text-white shadow-2xl relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-12 opacity-10">
+                  <Rocket className="w-48 h-48" />
+                </div>
+                <div className="relative z-10">
+                  <h2 className="text-4xl font-black mb-6 leading-tight">
+                    {guide.greetings}
+                  </h2>
+                  <p className="text-indigo-50 text-xl leading-relaxed mb-10 max-w-3xl font-medium opacity-90">
+                    {guide.prior_knowledge}
+                  </p>
+                  
+                  <div className="flex flex-wrap gap-6">
+                    <div className="glass px-8 py-4 rounded-2xl flex items-center gap-4">
+                      <div className="text-slate-200 font-bold text-sm uppercase tracking-wider">Experience Match</div>
+                      <div className="text-3xl font-black">{guide.prior_knowledge_alignment}/10</div>
                     </div>
-                  )}
+                    {guide.future && (
+                      <div className="bg-emerald-500/30 backdrop-blur-md border border-emerald-400/20 px-8 py-4 rounded-2xl flex items-center gap-4">
+                        <div className="text-emerald-100 font-bold text-sm uppercase tracking-wider">Future Demand</div>
+                        <div className="text-3xl font-black">{guide.future.relevance_score}/10</div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
 
-              <div className="p-8 space-y-12">
-                {/* Roadmap Section */}
-                {guide.roadmap && guide.roadmap.length > 0 && (
-                  <section>
-                    <div className="text-center mb-8">
-                      <h2 className="text-2xl font-bold text-indigo-700 mb-2">🗺️ Learning Roadmap</h2>
-                      <p className="text-indigo-600">Follow this structured path to master your chosen topic</p>
-                    </div>
-                    
-                    <div className="space-y-6">
-                      {guide.roadmap.map((step, idx) => (
-                        <div key={idx} className="relative">
-                          <div className="bg-gradient-to-r from-indigo-50 to-blue-50 p-8 rounded-xl border-l-4 border-indigo-500 shadow-sm hover:shadow-md transition-shadow duration-200">
-                            <div className="flex items-start space-x-6">
-                              <div className="flex-shrink-0">
-                                <span className="bg-indigo-600 text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-lg shadow-lg">
-                                  {step.step}
-                                </span>
-                              </div>
-                              <div className="flex-1">
-                                <h3 className="text-xl font-bold text-indigo-800 mb-3">{step.title}</h3>
-                                <p className="text-gray-700 text-lg leading-relaxed mb-4">{step.description}</p>
-                                
-                                {step.resources && step.resources.length > 0 && (
-                                  <div className="bg-white p-4 rounded-lg border border-indigo-100">
-                                    <h4 className="font-semibold text-indigo-700 mb-3 flex items-center">
-                                      <span className="mr-2">📚</span>
-                                      Resources:
-                                    </h4>
-                                    <ul className="space-y-2">
-                                      {step.resources.map((resource, resIdx) => (
-                                        <li key={resIdx} className="flex items-start text-gray-700">
-                                          <span className="text-indigo-500 mr-3 mt-1">•</span>
-                                          <span>{resource}</span>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
+              {/* Roadmap Section */}
+              <section>
+                <div className="flex items-center gap-4 mb-10">
+                  <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600">
+                    <MapIcon className="w-5 h-5" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-slate-900">Your Structured Path</h3>
+                </div>
+                
+                <div className="grid grid-cols-1 gap-12 relative">
+                  {/* Vertical Line for timeline */}
+                  <div className="absolute left-[23px] top-6 bottom-6 w-1 bg-gradient-to-b from-indigo-200 via-purple-200 to-transparent rounded-full hidden md:block"></div>
+                  
+                  {guide.roadmap.map((step, idx) => (
+                    <div key={idx} className="relative group md:pl-20">
+                      {/* Step Number Circle */}
+                      <div className="absolute left-0 top-0 w-12 h-12 rounded-2xl premium-gradient flex items-center justify-center text-white font-bold text-xl shadow-xl shadow-indigo-100 group-hover:scale-110 transition-transform duration-300 z-10 hidden md:flex">
+                        {step.step}
+                      </div>
+                      
+                      <div className="premium-card p-10">
+                        <div className="flex flex-col lg:row lg:items-center justify-between gap-6 mb-6">
+                          <div>
+                            <div className="text-indigo-600 font-bold text-sm uppercase tracking-widest mb-2">Phase 0{step.step}</div>
+                            <h4 className="text-2xl font-black text-slate-900">{step.title}</h4>
+                          </div>
+                          <div className="flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-xl text-sm font-bold border border-emerald-100">
+                            <CheckCircle2 className="w-4 h-4" />
+                            Milestone Goal
                           </div>
                         </div>
+                        
+                        <p className="text-slate-600 text-lg leading-relaxed mb-8 font-medium">
+                          {step.description}
+                        </p>
+                        
+                        {step.resources && step.resources.length > 0 && (
+                          <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 group-hover:bg-white transition-colors duration-300">
+                            <h5 className="font-bold text-slate-900 mb-4 flex items-center gap-2">
+                              <BookOpen className="w-4 h-4 text-indigo-600" />
+                              Curated Learning Materials
+                            </h5>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                              {step.resources.map((resource, resIdx) => (
+                                <div key={resIdx} className="flex items-center gap-3 p-3 rounded-xl bg-white border border-slate-100 hover:border-indigo-200 hover:shadow-md transition-all cursor-default group/res">
+                                  <div className="w-2 h-2 rounded-full bg-indigo-400"></div>
+                                  <span className="text-slate-700 font-medium text-sm flex-1 truncate">{resource}</span>
+                                  <ChevronRight className="w-4 h-4 text-slate-300 group-hover/res:text-indigo-500 transition-colors" />
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* Future & Compensation */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                {/* Future Trends */}
+                {guide.future && (
+                  <section className="premium-card p-10 flex flex-col">
+                    <div className="flex items-center gap-4 mb-8">
+                      <div className="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600">
+                        <Sparkles className="w-5 h-5" />
+                      </div>
+                      <h3 className="text-2xl font-bold text-slate-900">Future Outlook</h3>
+                    </div>
+                    <p className="text-slate-600 text-lg leading-relaxed mb-8 flex-1">
+                      {guide.future.demand_growth}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {guide.future.emerging_trends.map((trend, idx) => (
+                        <span key={idx} className="bg-emerald-50 text-emerald-700 px-4 py-2 rounded-xl text-sm font-bold border border-emerald-100">
+                          {trend}
+                        </span>
                       ))}
                     </div>
                   </section>
                 )}
 
-                {/* Future Trends Section */}
-                {guide.future && (
-                  <section>
-                    <div className="text-center mb-8">
-                      <h2 className="text-2xl font-bold text-indigo-700 mb-2">🔮 Future Outlook</h2>
-                      <p className="text-indigo-600">Stay ahead with emerging trends and market insights</p>
+                {/* Salary */}
+                <section className="premium-card p-10 flex flex-col justify-between">
+                  <div className="flex items-center gap-4 mb-8">
+                    <div className="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center text-amber-600">
+                      <IndianRupee className="w-5 h-5" />
                     </div>
-                    
-                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-8 rounded-xl border-l-4 border-green-500 shadow-sm">
-                      <p className="text-gray-700 text-lg leading-relaxed mb-6">{guide.future.demand_growth}</p>
-                      
-                      {guide.future.emerging_trends && guide.future.emerging_trends.length > 0 && (
-                        <div>
-                          <h3 className="font-bold text-green-800 mb-4 text-lg flex items-center">
-                            <span className="mr-2">🚀</span>
-                            Emerging Trends:
-                          </h3>
-                          <div className="flex flex-wrap gap-3">
-                            {guide.future.emerging_trends.map((trend, idx) => (
-                              <span key={idx} className="bg-green-200 text-green-800 px-4 py-2 rounded-full text-sm font-semibold shadow-sm">
-                                {trend}
+                    <h3 className="text-2xl font-bold text-slate-900">Compensation Insights</h3>
+                  </div>
+                  <div className="space-y-6">
+                    <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-50">
+                      <div className="flex items-center gap-3">
+                        <span className="text-2xl">🇮🇳</span>
+                        <span className="font-bold text-slate-700 uppercase tracking-wider text-xs">India</span>
+                      </div>
+                      <div className="text-xl font-black text-slate-900">{guide.avgPackages?.india || "N/A"}</div>
+                    </div>
+                    <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-50">
+                      <div className="flex items-center gap-3">
+                        <span className="text-2xl">🇺🇸</span>
+                        <span className="font-bold text-slate-700 uppercase tracking-wider text-xs">USA</span>
+                      </div>
+                      <div className="text-xl font-black text-slate-900">{guide.avgPackages?.usa || "N/A"}</div>
+                    </div>
+                    <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-50">
+                      <div className="flex items-center gap-3">
+                        <span className="text-2xl">🇪🇺</span>
+                        <span className="font-bold text-slate-700 uppercase tracking-wider text-xs">Europe</span>
+                      </div>
+                      <div className="text-xl font-black text-slate-900">{guide.avgPackages?.europe || "N/A"}</div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+
+              {/* Resource Grid Sections */}
+              <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                 {[
+                   { title: "Best Books", items: guide.bestBooks, icon: BookOpen, color: "blue" },
+                   { title: "Top Courses", items: guide.bestCourses, icon: Library, color: "purple" },
+                   { title: "Websites", items: guide.bestWebsites, icon: Globe, color: "orange" },
+                   { title: "Channels", items: guide.bestYoutubeChannels, icon: Briefcase, color: "red" }
+                 ].map((category, i) => category.items && category.items.length > 0 && (
+                   <div key={i} className="premium-card p-6">
+                     <h4 className={`text-lg font-bold mb-4 flex items-center gap-2 text-${category.color}-600`}>
+                       <category.icon className="w-4 h-4" />
+                       {category.title}
+                     </h4>
+                     <ul className="space-y-3">
+                        {category.items.map((item, j) => (
+                          <li key={j} className="text-sm font-medium text-slate-600 flex items-start gap-2">
+                            <div className={`w-1 h-1 rounded-full bg-${category.color}-400 mt-2`}></div>
+                            {item}
+                          </li>
+                        ))}
+                     </ul>
+                   </div>
+                 ))}
+              </section>
+
+              {/* Hiring Companies */}
+              {guide.topCompanies && guide.topCompanies.length > 0 && (
+                <section>
+                  <div className="flex items-center gap-4 mb-8">
+                    <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600">
+                      <Briefcase className="w-5 h-5" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-slate-900">Career Opportunities</h3>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {guide.topCompanies.map((company, i) => (
+                      <div key={i} className="premium-card p-8 group">
+                        <div className="flex justify-between items-start mb-6">
+                          <h4 className="text-xl font-black text-slate-800">{company.name}</h4>
+                          <div className="flex flex-wrap gap-2 justify-end">
+                            {company.roles && company.roles.map((role, j) => (
+                              <span key={j} className="bg-slate-100 text-slate-600 px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider">
+                                {role}
                               </span>
                             ))}
                           </div>
                         </div>
-                      )}
-                    </div>
-                  </section>
-                )}
-
-                {/* Learning Resources Grid */}
-                <section>
-                  <div className="text-center mb-8">
-                    <h2 className="text-2xl font-bold text-indigo-700 mb-2">📖 Learning Resources</h2>
-                    <p className="text-indigo-600">Curated resources to accelerate your learning journey</p>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* Best Books */}
-                    {guide.bestBooks && guide.bestBooks.length > 0 && (
-                      <div className="bg-blue-50 p-8 rounded-xl border border-blue-200 shadow-sm">
-                        <h3 className="text-xl font-bold text-blue-700 mb-6 flex items-center">
-                          <span className="mr-3 text-2xl">📚</span>
-                          Recommended Books
-                        </h3>
-                        <ul className="space-y-3">
-                          {guide.bestBooks.map((book, idx) => (
-                            <li key={idx} className="flex items-start text-gray-700">
-                              <span className="text-blue-500 mr-3 mt-2 font-bold">•</span>
-                              <span className="leading-relaxed">{book}</span>
-                            </li>
-                          ))}
-                        </ul>
+                        <p className="text-slate-600 font-medium leading-relaxed group-hover:text-slate-900 transition-colors">
+                          {company.hiringTrends}
+                        </p>
                       </div>
-                    )}
-
-                    {/* Best Courses */}
-                    {guide.bestCourses && guide.bestCourses.length > 0 && (
-                      <div className="bg-purple-50 p-8 rounded-xl border border-purple-200 shadow-sm">
-                        <h3 className="text-xl font-bold text-purple-700 mb-6 flex items-center">
-                          <span className="mr-3 text-2xl">🎓</span>
-                          Top Courses
-                        </h3>
-                        <ul className="space-y-3">
-                          {guide.bestCourses.map((course, idx) => (
-                            <li key={idx} className="flex items-start text-gray-700">
-                              <span className="text-purple-500 mr-3 mt-2 font-bold">•</span>
-                              <span className="leading-relaxed">{course}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* YouTube Channels */}
-                    {guide.bestYoutubeChannels && guide.bestYoutubeChannels.length > 0 && (
-                      <div className="bg-red-50 p-8 rounded-xl border border-red-200 shadow-sm">
-                        <h3 className="text-xl font-bold text-red-700 mb-6 flex items-center">
-                          <span className="mr-3 text-2xl">📺</span>
-                          YouTube Channels
-                        </h3>
-                        <ul className="space-y-3">
-                          {guide.bestYoutubeChannels.map((channel, idx) => (
-                            <li key={idx} className="flex items-start text-gray-700">
-                              <span className="text-red-500 mr-3 mt-2 font-bold">•</span>
-                              <span className="leading-relaxed">{channel}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {/* Best Websites */}
-                    {guide.bestWebsites && guide.bestWebsites.length > 0 && (
-                      <div className="bg-orange-50 p-8 rounded-xl border border-orange-200 shadow-sm">
-                        <h3 className="text-xl font-bold text-orange-700 mb-6 flex items-center">
-                          <span className="mr-3 text-2xl">🌐</span>
-                          Useful Websites
-                        </h3>
-                        <ul className="space-y-3">
-                          {guide.bestWebsites.map((website, idx) => (
-                            <li key={idx} className="flex items-start text-gray-700">
-                              <span className="text-orange-500 mr-3 mt-2 font-bold">•</span>
-                              <span className="leading-relaxed">{website}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                    ))}
                   </div>
                 </section>
-
-                {/* Projects Section */}
-                {guide.goodProjects && guide.goodProjects.length > 0 && (
-                  <section>
-                    <div className="text-center mb-8">
-                      <h2 className="text-2xl font-bold text-indigo-700 mb-2">💻 Hands-on Projects</h2>
-                      <p className="text-indigo-600">Build your portfolio with these practical projects</p>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                      {guide.goodProjects.map((project, idx) => (
-                        <div key={idx} className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
-                          <div className="flex justify-between items-start mb-4">
-                            <h3 className="text-lg font-bold text-gray-800 leading-tight">{project.name}</h3>
-                            <span className={`px-3 py-1 text-xs font-semibold rounded-full ${
-                              project.difficulty === 'Beginner' ? 'bg-green-100 text-green-800' :
-                              project.difficulty === 'Intermediate' ? 'bg-yellow-100 text-yellow-800' :
-                              'bg-red-100 text-red-800'
-                            }`}>
-                              {project.difficulty}
-                            </span>
-                          </div>
-                          <p className="text-gray-600 leading-relaxed mb-4">{project.description}</p>
-                          {project.githubExample && (
-                            <a 
-                              href={project.githubExample} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center text-indigo-600 hover:text-indigo-800 font-semibold transition-colors duration-200"
-                            >
-                              <span className="mr-2">View Example</span>
-                              <span>→</span>
-                            </a>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </section>
-                )}
-
-                {/* Companies Section */}
-                {guide.topCompanies && guide.topCompanies.length > 0 && (
-                  <section>
-                    <div className="text-center mb-8">
-                      <h2 className="text-2xl font-bold text-indigo-700 mb-2">🏢 Top Hiring Companies</h2>
-                      <p className="text-indigo-600">Companies actively seeking professionals in this field</p>
-                    </div>
-                    
-                    <div className="space-y-6">
-                      {guide.topCompanies.map((company, idx) => (
-                        <div key={idx} className="bg-slate-50 p-8 rounded-xl border border-slate-200 shadow-sm">
-                          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4">
-                            <h3 className="text-xl font-bold text-slate-800 mb-3 lg:mb-0">{company.name}</h3>
-                            <div className="flex flex-wrap gap-2">
-                              {company.roles && company.roles.map((role, roleIdx) => (
-                                <span key={roleIdx} className="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-semibold">
-                                  {role}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                          <p className="text-gray-600 leading-relaxed">{company.hiringTrends}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </section>
-                )}
-
-                {/* Salary Information */}
-                {guide.avgPackages && (
-                  <section>
-                    <div className="text-center mb-8">
-                      <h2 className="text-2xl font-bold text-indigo-700 mb-2">💰 Salary Insights</h2>
-                      <p className="text-indigo-600">Average compensation across different regions</p>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      {guide.avgPackages.india && (
-                        <div className="bg-green-50 p-8 rounded-xl text-center border-2 border-green-200 shadow-sm">
-                          <div className="text-3xl mb-4">🇮🇳</div>
-                          <h3 className="text-xl font-bold text-green-800 mb-3">India</h3>
-                          <p className="text-2xl font-bold text-green-700">{guide.avgPackages.india}</p>
-                        </div>
-                      )}
-                      {guide.avgPackages.usa && (
-                        <div className="bg-blue-50 p-8 rounded-xl text-center border-2 border-blue-200 shadow-sm">
-                          <div className="text-3xl mb-4">🇺🇸</div>
-                          <h3 className="text-xl font-bold text-blue-800 mb-3">USA</h3>
-                          <p className="text-2xl font-bold text-blue-700">{guide.avgPackages.usa}</p>
-                        </div>
-                      )}
-                      {guide.avgPackages.europe && (
-                        <div className="bg-purple-50 p-8 rounded-xl text-center border-2 border-purple-200 shadow-sm">
-                          <div className="text-3xl mb-4">🇪🇺</div>
-                          <h3 className="text-xl font-bold text-purple-800 mb-3">Europe</h3>
-                          <p className="text-2xl font-bold text-purple-700">{guide.avgPackages.europe}</p>
-                        </div>
-                      )}
-                    </div>
-                  </section>
-                )}
-              </div>
+              )}
             </div>
           )}
         </div>
